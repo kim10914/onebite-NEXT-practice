@@ -1,4 +1,8 @@
-export default async function fetchOneBook(id: number) {
+import { BookData } from "@/types";
+
+export default async function fetchOneBook(
+  id: number,
+): Promise<BookData | null> {
   const url = `http://localhost:12345/book/${id}`;
 
   try {
