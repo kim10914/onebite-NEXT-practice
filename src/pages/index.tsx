@@ -20,7 +20,6 @@ export const getStaticProps = async () => {
       allBooks,
       recoBooks,
     },
-    revalidate : 3, // 단위는 초 ISR 적용
   };
 };
 
