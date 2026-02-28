@@ -1,9 +1,9 @@
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import style from "./[id].module.css";
 import fetchOneBook from "@/lib/fetch-one-book";
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext,
+export const getStaticProps = async (
+  context: GetStaticPropsContext,
 ) => {
   const id = context.params!.id; // !단언 : 이 값은 없을 수가 없음
   const book = await fetchOneBook(Number(id));
@@ -13,9 +13,22 @@ export const getServerSideProps = async (
   };
 };
 
+// 모든 동적 경로를 다 설정해야 함.
+export const getStaticPaths = () => {
+  return {
+    paths : [
+      {params :{ id : "1"}}, // URL 파라미터의 값은 무조건 문자열로 설정
+      {params :{ id : "2"}},
+      {params :{ id : "3"}},
+    ],
+    fallback : false,
+  };
+};
+
+
 export default function Page({
   book,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!book) return "문제가 발생했습니다. 다시 시도해주세요!";
 
   const { id, title, subTitle, description, author, publisher, coverImgUrl } =
