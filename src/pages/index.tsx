@@ -2,15 +2,15 @@
 import SearchableLayout from "@/components/searchable-layout";
 import style from "./index.module.css";
 import { ReactNode, useEffect } from "react";
-import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetStaticPropsType } from "next";
 import fetchBooks from "@/lib/fetch-books";
 import fetchRandomBooks from "@/lib/fetch-random-books";
 
-// SSR 호출
-export const getServerSideProps = async () => {
-  const [allBooks, recoBooks] = await Promise.all([ // 병령 처리
+// SSG 호출로 변경
+export const getStaticProps = async () => {
+
+  const [allBooks, recoBooks] = await Promise.all([ // 병렬 처리
     fetchBooks(), 
     fetchRandomBooks(),
   ]);
@@ -23,7 +23,7 @@ export const getServerSideProps = async () => {
   };
 };
 
-export default function Home({ allBooks, recoBooks, }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home({ allBooks, recoBooks, }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className={style.container}>
       <section>
